@@ -1,0 +1,78 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  codex_review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Codex PR Review
+        id: run_codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            # あなたの役割
+            あなたは、システムエンジニアの新卒技術研修にアサインされたシニアプログラマです。
+            新卒エンジニアが課題に対する実装を行い、そのコードレビューを行います。
+            Pull Request の差分のみをレビューしてください。
+
+            # レビュー項目（品質面）
+            以下の5項目についてレビューしてください：
+            1. formatが揃っているか
+            2. マジックナンバー
+            3. SOLID原則
+            4. ストラテジーパターン
+            5. DRY原則に則って重複コードがないか
+
+            # 出力形式
+            マークダウン形式で、カテゴリごとに指摘をまとめてください。
+            各指摘には、ファイル名と該当するコードスニペットを含めてください。
+            問題がない場合は「特に指摘事項はありません。」と返してください。
+
+            例:
+            ## 📐 コードフォーマット
+            特になし
+
+            ## 🔢 マジックナンバー
+            ### `app/Http/Controllers/TodoController.php`
+            ```php
+            if ($count > 100) {
+            ```
+            この100という数値は定数化することを推奨します。
+            新卒エンジニアの方へ：マジックナンバーとは、コード中に直接書かれた意味不明な数値のことです。
+            定数として名前をつけることで、コードの可読性が向上します。
+
+      - name: Post Codex feedback to PR
+        if: steps.run_codex.outputs.final-message != ''
+        uses: actions/github-script@v7
+        env:
+          REVIEW_MESSAGE: ${{ steps.run_codex.outputs.final-message }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const reviewMessage = process.env.REVIEW_MESSAGE;
+
+            const body = [
+              '## 🤖 AI Code Review',
+              '',
+              reviewMessage
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });
