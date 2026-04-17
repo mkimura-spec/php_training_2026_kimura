@@ -51,7 +51,7 @@ if (!empty($error)) {
         <?php echo sanitizing::sanitize($title); ?></p>
 
         <p>内容<br>
-        <?php echo sanitizing::sanitize($content); ?></p>
+        <?php echo sanitizing::nl2br_sanitize($content); ?></p>
 
         <form action="todo_add_done.php" method="post">
             <input type="hidden" name="title" value="<?php echo $title; ?>">
