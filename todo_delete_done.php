@@ -13,13 +13,11 @@
 
     $model = new TaskModel($pdo);
 
-    // todo_add_check.phpからhiddenで情報を受け取る
-    $title = $_POST['title'];
-    $content = $_POST['content'];
+    $id = $_POST['id'];
 
     try {
-        $model->add($title, $content);
-        echo 'todoリストを追加しました。<br>';
+        $model->delete($id);
+        echo 'このtodoリストを削除しました。<br>';
     } catch (Exception $e) {
         echo 'ただいま障害により大変ご迷惑をおかけしております。';
         // エラー確認

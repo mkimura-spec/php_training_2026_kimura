@@ -1,3 +1,7 @@
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,6 +11,9 @@
 
 <?php
 
+require_once './todo_class/Task.php';
+require_once __DIR__ . '/common/common.php';
+
 // todo_add_phpから入力を受け取る
 $title = $_POST['title'];
 $content = $_POST['content'];
@@ -15,8 +22,14 @@ $content = $_POST['content'];
 $error = [];
 if ('' == $title) {
     $error[] = 'タイトルが入力されていません。';
-} elseif (mb_strlen($title) > 255) {
+} elseif (mb_strlen($title) > Task::MAX_TITLE_LENGTH) {
     $error[] = 'タイトルは255文字以内で入力してください。';
+}
+
+if ('' == $content) {
+    $error[] = '内容が入力されていません。';
+} elseif (mb_strlen($content) > Task::MAX_CONTENT_LENGTH) {
+    $error[] = '内容は2000文字以内で入力してください。';
 }
 
 // エラーがある場合の表示処理
@@ -35,10 +48,10 @@ if (!empty($error)) {
         <p>以下の内容で登録します。よろしいですか？</p>
 
         <p>タイトル<br>
-        <?php echo $title; ?></p>
+        <?php echo sanitizing::sanitize($title); ?></p>
 
         <p>内容<br>
-        <?php echo $content; ?></p>
+        <?php echo sanitizing::sanitize($content); ?></p>
 
         <form action="todo_add_done.php" method="post">
             <input type="hidden" name="title" value="<?php echo $title; ?>">

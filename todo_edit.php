@@ -3,12 +3,16 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>ToDo追加画面</title>
+  <title>ToDo編集画面</title>
 </head>
+<?php
 
+$id = $_GET['id'];
+
+?>
 <body>
   <h1>ToDo新規追加</h1>
-  <form method="post" action="todo_add_check.php">
+  <form method="post" action="todo_edit_check.php">
     <p>タイトル：
       <br>
       <input type="text" name="title" style="width:300px;">

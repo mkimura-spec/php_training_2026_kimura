@@ -1,6 +1,5 @@
 <?php
 
-// TaskModel.php
 require_once 'task.php'; // Taskクラスを使うので読み込む
 
 class TaskModel
@@ -8,14 +7,9 @@ class TaskModel
     private $dbh;
 
     // クラスが呼ばれた時に、データベースに接続する
-    public function __construct()
+    public function __construct(PDO $dbh)
     {
-        $dsn = 'mysql:dbname=php_advance;host=localhost;charset=utf8';
-        $user = 'root';
-        $password = '';
-
-        $this->dbh = new PDO($dsn, $user, $password);
-        $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->dbh = $dbh;
     }
 
     // 一覧を取得する機能（メソッド）
@@ -40,6 +34,22 @@ class TaskModel
         return $tasks; // Taskクラスが入った配列を返す
     }
 
+    public function findById($id)
+    {
+        $sql = 'SELECT id, title, content, created_at, updated_at FROM table_todolist WHERE id=?';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return new Task(
+            $row['id'],
+            $row['title'],
+            $row['content'],
+            $row['created_at'],
+            $row['updated_at']
+        );
+    }
+
     public function add($title, $content)
     {
         // SQL文を作る
@@ -48,7 +58,34 @@ class TaskModel
         $stmt = $this->dbh->prepare($sql);
         // データを配列にまとめる
         $data = [$title, $content];
-        // 実行（エグゼキュート）
+        // 実行
+        $stmt->execute($data);
+    }
+
+    public function delete($id)
+    {
+        // SQL文を作る
+        $sql = 'DELETE FROM table_todolist WHERE id=?';
+        // 準備
+        $stmt = $this->dbh->prepare($sql);
+        // データを配列にまとめる
+        $data = [$id];
+        // 実行
+        $stmt->execute($data);
+    }
+
+    public function update($id, $title, $content)
+    {
+        // SQL文を作る
+        $sql = 'UPDATE table_todolist SET title=? , content=? WHERE id=?';
+        // 準備
+        $stmt = $this->dbh->prepare($sql);
+        $deta = [];
+        // データを配列にまとめる
+        $data[] = $title;
+        $data[] = $content;
+        $data[] = $id;
+        // 実行
         $stmt->execute($data);
     }
 }
