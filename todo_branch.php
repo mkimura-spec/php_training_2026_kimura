@@ -1,15 +1,23 @@
 <?php
 
-if (true == isset($_POST['edit'])) {
-    // print'修正ボタンが押された。<br>';
-    $id = $_POST['id'];
-    header('Location:todo_edit.php?id=' . $id);
-    exit;
-}
+$action = $_POST['action'] ?? '';
+$id = $_POST['id'] ?? '';
 
-if (true == isset($_POST['delete'])) {
-    // print'削除ボタンが押された。<br>';
-    $id = $_POST['id'];
-    header('Location:todo_delete.php?id=' . $id);
+// ルールを配列にまとめる
+$handlers = [
+    'add' => 'todo_add.php',
+    'edit' => 'todo_edit.php',
+    'delete' => 'todo_delete.php',
+];
+
+// 実行部（ルールが増えてもここは書き換えない）
+if (array_key_exists($action, $handlers)) {
+    $targetFile = $handlers[$action];
+    $url = $targetFile;
+    if (!empty($id)) {
+        $url .= '?id=' . $id;
+    }
+    header('Location: ' . $url);
     exit;
 }
+exit('不正なアクションです。');

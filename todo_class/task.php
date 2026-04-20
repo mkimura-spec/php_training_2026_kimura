@@ -2,11 +2,15 @@
 
 class Task
 {
-    private $id;
-    private $title;
-    private $content;
-    private $created_at;
-    private $updated_at;
+    // プロパティ
+    private int $id;
+    private string $title;
+    private string $content;
+    private string $created_at;
+    private string $updated_at;
+    // マジックナンバーを定数化
+    public const MAX_TITLE_LENGTH = 255;
+    public const MAX_CONTENT_LENGTH = 2000;
 
     public function __construct($id, $title, $content, $created_at, $updated_at)
     {

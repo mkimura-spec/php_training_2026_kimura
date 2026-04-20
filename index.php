@@ -3,10 +3,15 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'todo_class/db.php';
+// config/database.phpからPDOオブジェクトを呼び出す
+$pdo = require_once __DIR__ . '/config/database.php';
+// todo_class/db.phpを呼び出す→TaskModelを使う
+require_once __DIR__ . '/todo_class/db.php';
+// common/common.phpを呼び出す→XSS対策
+require_once __DIR__ . '/common/common.php';
 
 // TaskModekを呼び出してでデータベースに接続する
-$model = new TaskModel();
+$model = new TaskModel($pdo);
 // getAllでデータベースの中身を全て取り出す
 $tasks = $model->getAll();
 // 総件数を数える
@@ -37,27 +42,28 @@ $tasks = $model->getAll();
 <body>
     <h1>ToDo一覧</h1>
 <div>
-    <form method="post" action="todo_add.php">
-        <button type="submit">todoリスト追加</button>
+    <form method="post" action="todo_branch.php">
+        <button type="submit" name="action" value="add">todoリストを追加</button>
     </form>
 </div>
 
     <?php foreach ($tasks as $task) { ?>
         <div class="task-box">
-            <h3><?php echo $task->getTitle(); ?></h3>
-            <p><?php echo $task->getContent(); ?></p>
+            <h3><?php echo sanitizing::sanitize($task->getTitle()); ?></h3>
+            <p><?php echo sanitizing::nl2br_sanitize($task->getContent()); ?></p>
             
             <small>
-                作成日: <?php echo $task->getCreatedAt(); ?> <br>
-                最終更新日: <?php echo $task->getUpdatedAt(); ?> <br>
-                ID:<?php echo $task->getId(); ?> 
+                作成日: <?php echo sanitizing::sanitize($task->getCreatedAt()); ?> <br>
+                最終更新日: <?php echo sanitizing::sanitize($task->getUpdatedAt()); ?> <br>
+                <!-- 確認用にIDを表示-実装時にはコメントアウト -->
+                <!-- ID:<?php echo $task->getId(); ?>  -->
             </small>
 
             <div class="buttons">
                 <form method="post" action="todo_branch.php">
                 <input type="hidden" name="id" value="<?php echo $task->getId(); ?>">
-                <input type="submit" name="edit" value="編集">
-                <input type="submit" name="delete" value="削除">
+                <button type="submit" name="action" value="edit">編集</button>
+                <button type="submit" name="action" value="delete">削除</button>
                 </form>
             </div>
         </div>
