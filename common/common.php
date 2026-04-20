@@ -1,7 +1,7 @@
 <?php
 
 // クラス名などは今後変更する
-class sanitizing
+class Sanitizer
 {
     // XSS対策のためにHTMLエスケープを施す関数
     public static function sanitize($str)

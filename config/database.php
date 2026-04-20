@@ -1,21 +1,15 @@
 <?php
 
-// config/database.php
-
 $dsn = 'mysql:dbname=php_advance;host=localhost;charset=utf8';
 $user = 'root';
 $password = '';
 
-try {
-    $pdo = new PDO($dsn, $user, $password);
-    // エラーモードを例外に設定（必須の品質要件）
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// エラーモードを例外に設定（必須の品質要件）
+// エラーが出た場合エラーメッセージを配列にして格納させる
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
 
-    // ★ポイント：作られたPDOオブジェクトを「返す」
-    return $pdo;
-} catch (PDOException $e) {
-    echo 'ただいま障害により大変ご迷惑をおかけしております。';
-    // エラー確認
-    echo 'エラー原因：' . $e->getMessage();
-    exit;
-}
+// ★ポイント：作られたPDOオブジェクトを「返す」
+return new PDO($dsn, $user, $password, $options);
