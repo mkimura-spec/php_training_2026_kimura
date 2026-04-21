@@ -17,8 +17,8 @@
       <br>
       <textarea name="content" style="width:300px; height:100px;"></textarea>
     </p>
-    <input type="submit" value="追加する">
     <input type="button" onclick="history.back()" value="一覧画面へ戻る">
+    <input type="submit" value="追加する">
   </form>
 </body>
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'task.php'; // Taskクラスを使うので読み込む
+require_once 'Task.php'; // Taskクラスを使うので読み込む
 
 class TaskModel
 {
@@ -77,10 +77,10 @@ class TaskModel
     public function update($id, $title, $content)
     {
         // SQL文を作る
-        $sql = 'UPDATE table_todolist SET title=? , content=? WHERE id=?';
+        $sql = 'UPDATE table_todolist SET title=? , content=? , updated_at=NOW() WHERE id=?';
         // 準備
         $stmt = $this->dbh->prepare($sql);
-        $deta = [];
+        $data = [];
         // データを配列にまとめる
         $data[] = $title;
         $data[] = $content;

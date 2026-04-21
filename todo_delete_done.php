@@ -8,8 +8,15 @@
 <body>
     <?php
     // config/database.phpからPDOオブジェクトを呼び出す
-    $pdo = require_once __DIR__ . '/config/database.php';
-    require_once __DIR__ . '/todo_class/db.php';
+    try {
+        $pdo = require_once __DIR__ . '/config/database.php';
+    } catch (PDOException $e) {
+        // PDO例外が発生した場合
+        echo 'ただいまシステム障害によりご迷惑をおかけしております。';
+        // error_log($e->getMessage());
+        exit;
+    }
+    require_once __DIR__ . '/models/db.php';
 
     $model = new TaskModel($pdo);
 
