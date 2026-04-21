@@ -1,5 +1,8 @@
 <?php
 
+// ベースURLの定義
+define('BASE_URL', '/php_training_2026_kimura');
+
 // クラス名などは今後変更する
 class Sanitizer
 {
