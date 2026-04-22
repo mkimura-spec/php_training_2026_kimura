@@ -1,9 +1,12 @@
 <?php
 
+/**
+ * 共通で使用する定数と文字列サニタイズ処理をまとめたクラス.
+ */
+
 // ベースURLの定義
 define('BASE_URL', '/php_training_2026_kimura');
 
-// クラス名などは今後変更する
 class Sanitizer
 {
     // XSS対策のためにHTMLエスケープを施す関数
