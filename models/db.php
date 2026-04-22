@@ -13,10 +13,11 @@ class TaskModel
     }
 
     // 一覧を取得する機能（メソッド）
-    public function getAll()
+    public function getAll(StrategyInterface $strategy)
     {
-        // 作成日時の降順（新しい順）で取得するようにORDER BYを追加
-        $sql = 'SELECT id, title, content, created_at, updated_at FROM table_todolist ORDER BY created_at DESC';
+        $orderBy = $strategy->getOrderByClause();
+        // コントローラ側で受け取ったStrategyを使ってSQL文を作る
+        $sql = "SELECT id, title, content, created_at, updated_at FROM table_todolist ORDER BY {$orderBy}";
         $stmt = $this->dbh->query($sql);
 
         $tasks = [];

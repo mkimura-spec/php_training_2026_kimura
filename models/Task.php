@@ -9,8 +9,8 @@ class Task
     private string $created_at;
     private string $updated_at;
     // マジックナンバーを定数化
-    public const MAX_TITLE_LENGTH = 255;
-    public const MAX_CONTENT_LENGTH = 2000;
+    public const MAX_TITLE_LENGTH = 50;
+    public const MAX_CONTENT_LENGTH = 200;
 
     public function __construct($id, $title, $content, $created_at, $updated_at)
     {

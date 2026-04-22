@@ -2,7 +2,7 @@
 
 // バリデーションを行うクラスを定義
 // Taskクラスの定義を読み込む
-require_once __DIR__ . '/Task.php';
+require_once __DIR__ . '/../models/Task.php';
 
 class TaskValidator
 {
