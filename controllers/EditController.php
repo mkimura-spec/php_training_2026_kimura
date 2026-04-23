@@ -12,7 +12,7 @@ class EditController
 {
     private $model;
 
-    public function __construct(TaskModel $model)
+    public function __construct($model)
     {
         $this->model = $model;
     }
@@ -52,6 +52,11 @@ class EditController
             require_once __DIR__ . '/../todo_views/edit_view.php';
 
             return;
+        }
+
+        $task = $this->model->findById($id);
+        if (!$task) {
+            exit('指定されたタスクが見つかりません。すでに削除された可能性があります。');
         }
 
         try {

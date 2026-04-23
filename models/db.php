@@ -19,17 +19,16 @@ class TaskModel
 
     /**
      * 指定された並び替え戦略を用いてToDo一覧を取得する.
-     * StrategyInterfaceの実装クラスからORDER BY句を受け取り、その並び順でToDoデータを取得する。
-     *
-     * @param StrategyInterface $strategy 一覧の並び順を決定するストラテジー
+     * StrategyInterfaceの実装クラスを受け取り、その並び順でToDoデータを取得する。
      *
      * @return Task[] ToDoオブジェクトの配列
      */
     public function getAll(StrategyInterface $strategy)
     {
+        // コントローラ側で受け取ったstrategyクラスの中のメソッドを使ってSQL文を作る
+        // メソッド名はインターフェースで統一している
         $orderBy = $strategy->getOrderByClause();
-        // コントローラ側で受け取ったStrategyを使ってSQL文を作る
-        // ここの$orderByはSort_branchクラスの戻り値で固定値しか入らないので安全
+        // ここの$orderByは各Strategyクラスの戻り値で固定値しか入らないので安全
         $sql = "SELECT id, title, content, created_at, updated_at FROM table_todolist ORDER BY {$orderBy}";
         $stmt = $this->dbh->query($sql);
 
@@ -79,11 +78,10 @@ class TaskModel
     /**
      * 入力された情報をもとにToDoをInsertする.
      *
-     * @param string $title , $content //入力されたタイトルと内容
-     *
-     * @return void
+     * @param string $title   //入力されたタイトル
+     * @param string $content //入力された内容
      */
-    public function add($title, $content)
+    public function add($title, $content): void
     {
         // SQL文を作る
         $sql = 'INSERT INTO table_todolist(title, content, created_at, updated_at) VALUES (?, ?, NOW(), NOW())';
@@ -99,10 +97,8 @@ class TaskModel
      * 指定したIDのToDoをDeleteする.
      *
      * @param string $id //削除するToDoのID
-     *
-     * @return void
      */
-    public function delete($id)
+    public function delete($id): void
     {
         $sql = 'DELETE FROM table_todolist WHERE id=?';
         $stmt = $this->dbh->prepare($sql);
@@ -114,11 +110,10 @@ class TaskModel
     /**
      * 入力された情報をもとにToDoをUpdateする.
      *
-     * @param string $title , $content //入力されたタイトルと内容
-     *
-     * @return void
+     * @param string $title   //入力されたタイトル
+     * @param string $content //入力された内容
      */
-    public function update($id, $title, $content)
+    public function update($id, $title, $content): void
     {
         $sql = 'UPDATE table_todolist SET title=? , content=? , updated_at=NOW() WHERE id=?';
         $stmt = $this->dbh->prepare($sql);

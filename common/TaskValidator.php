@@ -16,16 +16,16 @@ class TaskValidator
     {
         $error = [];
 
-        if ('' == $title) {
-            $error[] = 'タイトルが入力されていません。';
+        if ('' == trim($title)) {
+            $error[] = '・タイトルが入力されていません。';
         } elseif (mb_strlen($title) > Task::MAX_TITLE_LENGTH) {
-            $error[] = 'タイトルは' . Task::MAX_TITLE_LENGTH . '文字以内で入力してください。';
+            $error[] = '・タイトルは' . Task::MAX_TITLE_LENGTH . '文字以内で入力してください。';
         }
 
-        if ('' == $content) {
-            $error[] = '内容が入力されていません。';
+        if ('' == trim($content)) {
+            $error[] = '・内容が入力されていません。';
         } elseif (mb_strlen($content) > Task::MAX_CONTENT_LENGTH) {
-            $error[] = '内容は' . Task::MAX_CONTENT_LENGTH . '文字以内で入力してください。';
+            $error[] = '・内容は' . Task::MAX_CONTENT_LENGTH . '文字以内で入力してください。';
         }
 
         return $error;

@@ -1,21 +1,35 @@
 <?php
-
 require_once __DIR__ . '/../common/common.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
   <meta charset="UTF-8">
   <title>ToDo編集画面</title>
+  <style>
+        .error{
+          border: 1px solid red;
+          background-color: #f0f8ff;
+          padding: 10px;
+        }
+        .container {
+          width: 320px;
+          margin: 0 auto;
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: #f0f8ff">
+  <div class="container">
   <h1>ToDoリスト編集</h1>
-
     <?php if (!empty($errors)) { ?>
+    <div class="error">
+        <p style="color: red;">&#9888; 入力内容に誤りがあります！</p>
         <?php foreach ($errors as $error) { ?>
             <p><?php echo Sanitizer::sanitize($error); ?></p>
         <?php } ?>
+        </div>
     <?php } ?>
 
   <form method="post" action="<?php echo BASE_URL; ?>/route/todo_branch.php">
@@ -33,6 +47,7 @@ require_once __DIR__ . '/../common/common.php';
     <input type="hidden" name="id" value="<?php echo Sanitizer::sanitize($id); ?>">
     <input type="submit" value="変更する">
   </form>
+  </div>
 </body>
 
 </html>

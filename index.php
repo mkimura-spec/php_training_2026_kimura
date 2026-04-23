@@ -12,7 +12,7 @@ require_once __DIR__ . '/models/db.php';
 
 // DB接続 // フロントコントローラーで接続
 try {
-    require_once __DIR__ . '/models/config/database.php';
+    require_once __DIR__ . '/config/database.php';
     $db = new Database();
     $pdo = $db->createPDO();
 } catch (PDOException $e) {
@@ -24,3 +24,5 @@ $model = new TaskModel($pdo);
 // コントローラーのインスタンスを作成して、一覧表示（index）を指示する
 $controller = new ListController($model);
 $controller->index();
+
+$pdo = null; // DB接続を閉じる
