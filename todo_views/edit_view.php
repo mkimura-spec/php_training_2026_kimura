@@ -1,7 +1,5 @@
 <?php
-// エラー表示
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+
 require_once __DIR__ . '/../common/common.php';
 ?>
 <!DOCTYPE html>
@@ -27,7 +25,7 @@ require_once __DIR__ . '/../common/common.php';
     </p>
     <p>内容：
       <br>
-      <!-- textareaの中は生の改行をそもまま認識してくれるのでnl2brは不要・textareaは改行が楽 -->
+      <!-- textareaの中は生の改行をそのまま認識してくれるのでnl2brは不要・textareaは改行が楽 -->
       <textarea name="content" style="width:300px; height:100px;"><?php echo Sanitizer::sanitize($content); ?></textarea>
     </p>
     <button type="button" onclick="location.href='<?php echo BASE_URL; ?>/index.php'">一覧画面へ戻る</button>

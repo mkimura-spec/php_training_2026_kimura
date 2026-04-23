@@ -1,7 +1,5 @@
 <?php
-// エラー表示
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+
 require_once __DIR__ . '/../common/common.php';
 ?>
 
@@ -9,52 +7,65 @@ require_once __DIR__ . '/../common/common.php';
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>ToDoアプリ_index</title>
     <style>
         /* ボタンなどはいずれbootstrapを用いたい */
         .task-box {
-            border: 1px solid #999;
-            padding: 10px;
-            margin-bottom: 10px;
-            width: 400px;
+            margin:20px;
+            border: 1px solid #ccc;
+            width: calc(100% - 40px);
         }
-        /* ボタンを右側に寄せるためのcss */
-        .buttons {
-            text-align: right;
-            margin-top: 10px;
+        .select_sort {
+            margin-left:20px;
         }
     </style>
 </head>
 <body>
-    <h1>ToDo一覧</h1>
-<div>
+    <div class="d-flex justify-content-between">
+    <h1 class="m-3">ToDoリスト</h1>
     <form method="post" action="<?php echo BASE_URL; ?>/route/todo_branch.php">
-        <button type="submit" name="action" value="add">todoリストを追加</button>
+        <button type="submit" name="action" value="add" class="btn btn-primary m-4">+ 新しいToDoを追加</button>
+    </form>
+    </div>
+<div class="select_sort">
+    <form method="get" action="<?php echo BASE_URL; ?>/index.php">
+        <select name="sort" size="1">
+            <option value="created_desc" <?php echo 'created_desc' === $sort ? 'selected' : ''; ?>>作成日の新しい順</option>
+            <option value="created_asc" <?php echo 'created_asc' === $sort ? 'selected' : ''; ?>>作成日の古い順</option>
+            <option value="updated_desc" <?php echo 'updated_desc' === $sort ? 'selected' : ''; ?>>最終更新日の新しい順</option>
+            <option value="updated_asc" <?php echo 'updated_asc' === $sort ? 'selected' : ''; ?>>最終更新日の古い順</option>
+        </select>
+        <button type="submit" class="btn btn-primary buttons">変更</button>
     </form>
 </div>
-
+<table class="table table-striped table-bordered task-box">
+    <tr>
+        <th>タイトル</th>
+        <th>内容</th>
+        <th>作成日</th>
+        <th>最終更新日</th>
+        <th>編集/削除</th>
+    </tr>
     <?php foreach ($tasks as $task) { ?>
-        <div class="task-box">
-            <h3><?php echo Sanitizer::sanitize($task->getTitle()); ?></h3>
-            <p><?php echo Sanitizer::nl2br_sanitize($task->getContent()); ?></p>
-            
-            <small>
-                作成日: <?php echo Sanitizer::sanitize($task->getCreatedAt()); ?> <br>
-                最終更新日: <?php echo Sanitizer::sanitize($task->getUpdatedAt()); ?> <br>
-                <!-- 確認用にIDを表示-実装時にはコメントアウト -->
-                <!-- ID:<?php echo $task->getId(); ?>  -->
-            </small>
-
+    <tr>
+            <td><?php echo Sanitizer::sanitize($task->getTitle()); ?></td>
+            <td><?php echo Sanitizer::nl2br_sanitize($task->getContent()); ?></td>
+            <td><?php echo Sanitizer::sanitize($task->getCreatedAt()); ?> <br></td>
+            <td><?php echo Sanitizer::sanitize($task->getUpdatedAt()); ?> <br></td>
+            <td>
             <div class="buttons">
                 <form method="post" action="<?php echo BASE_URL; ?>/route/todo_branch.php">
                 <input type="hidden" name="id" value="<?php echo Sanitizer::sanitize($task->getId()); ?>">
-                <button type="submit" name="action" value="edit">編集</button>
+                <button type="submit" name="action" value="edit" class="btn btn-primary">編集</button>
                 <button type="submit" onclick="return confirm('本当にこのToDoリストを削除してもよろしいですか？')" 
-                name="action" value="delete">削除</button>
+                name="action" value="delete" class="btn btn-danger">削除</button>
                 </form>
             </div>
-        </div>
+            </td>
+    </tr>
     <?php } ?>
+</table>
 
 </body>
 </html>

@@ -1,44 +1,57 @@
 <?php
 
+/**
+ * ToDo操作の振り分けを行うルーティングファイル
+ * POSTされたactionの値に応じて、追加・編集・削除の各コントローラーを呼び出す.
+ */
+
 // エラー表示（デバッグ用）
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
 // データベース接続とコントローラーを読み込む
 require_once __DIR__ . '/../models/db.php';
-require_once __DIR__ . '/../controllers/Taskcontroller.php';
+require_once __DIR__ . '/../controllers/AddController.php';
+require_once __DIR__ . '/../controllers/EditController.php';
+require_once __DIR__ . '/../controllers/DeleteController.php';
 
 try {
-    $pdo = require __DIR__ . '/../models/config/database.php';
+    require_once __DIR__ . '/../models/config/database.php';
+    $db = new Database();
+    $pdo = $db->createPDO();
 } catch (PDOException $e) {
     exit('ただいま障害により大変ご迷惑をおかけしております。');
 }
 
 $model = new TaskModel($pdo);
-$controller = new TaskController($model);
 
 $action = $_POST['action'] ?? '';
-$id = $_POST['id'] ?? '';
 
+// actionの値に応じて、対応するコントローラーの処理を実行する.
 switch ($action) {
     case 'add':
+        $controller = new AddController($model);
         $controller->showAdd();
         break;
 
     case 'add_store':
+        $controller = new AddController($model);
         $controller->storeAdd();
         break;
 
     case 'edit':
-        $controller->showEdit($id);
+        $controller = new EditController($model);
+        $controller->showEdit();
         break;
 
     case 'edit_store':
-        $controller->storeEdit($id);
+        $controller = new EditController($model);
+        $controller->storeEdit();
         break;
 
     case 'delete':
-        $controller->delete($id);
+        $controller = new DeleteController($model);
+        $controller->delete();
         break;
 
     default:
