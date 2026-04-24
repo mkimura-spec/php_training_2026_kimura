@@ -12,7 +12,7 @@ require_once __DIR__ . '/../common/common.php';
   <style>
           .error{
             border: 1px solid red;
-            background-color: #ff6347;
+            background-color: #ffffff;
             padding: 10px;
           }
           .container {
