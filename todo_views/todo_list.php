@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../common/common.php';
 ?>
 
@@ -8,7 +7,7 @@ require_once __DIR__ . '/../common/common.php';
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>ToDoアプリ_index</title>
+    <title>ToDoアプリ一覧表示</title>
     <style>
         /* ボタンなどはいずれbootstrapを用いたい */
         .task-box {
@@ -21,11 +20,11 @@ require_once __DIR__ . '/../common/common.php';
         }
     </style>
 </head>
-<body>
+<body style="background-color: #f0f8ff">
     <div class="d-flex justify-content-between">
     <h1 class="m-3">ToDoリスト</h1>
     <form method="post" action="<?php echo BASE_URL; ?>/route/todo_branch.php">
-        <button type="submit" name="action" value="add" class="btn btn-primary m-4">+ 新しいToDoを追加</button>
+        <button type="submit" name="action" value="add" class="btn btn-success m-4">+ 新しいToDoを追加</button>
     </form>
     </div>
 <div class="select_sort">
@@ -39,7 +38,7 @@ require_once __DIR__ . '/../common/common.php';
         <button type="submit" class="btn btn-primary buttons">変更</button>
     </form>
 </div>
-<table class="table table-striped table-bordered task-box">
+<table class="table table-striped table-bordered task-box" style="background-color: #ffffff">
     <tr>
         <th>タイトル</th>
         <th>内容</th>

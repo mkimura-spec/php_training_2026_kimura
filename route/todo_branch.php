@@ -16,7 +16,7 @@ require_once __DIR__ . '/../controllers/EditController.php';
 require_once __DIR__ . '/../controllers/DeleteController.php';
 
 try {
-    require_once __DIR__ . '/../models/config/database.php';
+    require_once __DIR__ . '/../config/database.php';
     $db = new Database();
     $pdo = $db->createPDO();
 } catch (PDOException $e) {
@@ -28,32 +28,21 @@ $model = new TaskModel($pdo);
 $action = $_POST['action'] ?? '';
 
 // actionの値に応じて、対応するコントローラーの処理を実行する.
-switch ($action) {
-    case 'add':
-        $controller = new AddController($model);
-        $controller->showAdd();
-        break;
+$routes = [
+    'add' => [AddController::class, 'showAdd'],
+    'add_store' => [AddController::class, 'storeAdd'],
+    'edit' => [EditController::class, 'showEdit'],
+    'edit_store' => [EditController::class, 'storeEdit'],
+    'delete' => [DeleteController::class, 'delete'],
+];
 
-    case 'add_store':
-        $controller = new AddController($model);
-        $controller->storeAdd();
-        break;
-
-    case 'edit':
-        $controller = new EditController($model);
-        $controller->showEdit();
-        break;
-
-    case 'edit_store':
-        $controller = new EditController($model);
-        $controller->storeEdit();
-        break;
-
-    case 'delete':
-        $controller = new DeleteController($model);
-        $controller->delete();
-        break;
-
-    default:
-        exit('不正なアクションです。');
+if (!isset($routes[$action])) {
+    exit('不正なアクションです。');
 }
+
+[$controllerClass,$method] = $routes[$action];
+
+$controller = new $controllerClass($model);
+$controller->$method();
+
+$pdo = null; // DB接続を閉じる

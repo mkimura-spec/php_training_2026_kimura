@@ -11,7 +11,7 @@ class DeleteController
 {
     private $model;
 
-    public function __construct(TaskModel $model)
+    public function __construct($model)
     {
         $this->model = $model;
     }

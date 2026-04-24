@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/db.php';
-require_once __DIR__ . '/../strategies/sorts/Sort_branch.php';
+require_once __DIR__ . '/../strategies/sorts/SortFactory.php';
 
 /**
  * ToDoの一覧を表示するためのコントローラー
@@ -11,7 +11,7 @@ class ListController
 {
     private $model;
 
-    public function __construct(TaskModel $model)
+    public function __construct($model)
     {
         $this->model = $model;
     }
@@ -20,7 +20,7 @@ class ListController
     {
         $sort = $_GET['sort'] ?? 'created_desc';
 
-        $strategy = Sort_branch::getSortclass($sort);
+        $strategy = SortFactory::create($sort);
         // 一覧を取得する
         $tasks = $this->model->getAll($strategy);
 
