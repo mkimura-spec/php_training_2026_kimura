@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/db.php';
 require_once __DIR__ . '/../common/TaskValidator.php';
 require_once __DIR__ . '/../common/common.php';
 require_once __DIR__ . '/../models/Interfacedb.php';

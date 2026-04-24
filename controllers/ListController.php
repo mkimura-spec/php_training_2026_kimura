@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/db.php';
 require_once __DIR__ . '/../strategies/sorts/SortFactory.php';
 require_once __DIR__ . '/../models/Interfacedb.php';
 
