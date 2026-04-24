@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../models/db.php';
 require_once __DIR__ . '/../common/common.php';
+require_once __DIR__ . '/../models/Interfacedb.php';
 
 /**
  * ToDoの削除機能を担当するコントローラー
@@ -11,7 +12,7 @@ class DeleteController
 {
     private $model;
 
-    public function __construct($model)
+    public function __construct(Interfacedb $model)
     {
         $this->model = $model;
     }

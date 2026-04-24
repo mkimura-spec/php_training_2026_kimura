@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../models/db.php';
 require_once __DIR__ . '/../strategies/sorts/SortFactory.php';
+require_once __DIR__ . '/../models/Interfacedb.php';
 
 /**
  * ToDoの一覧を表示するためのコントローラー
@@ -11,7 +12,7 @@ class ListController
 {
     private $model;
 
-    public function __construct($model)
+    public function __construct(Interfacedb $model)
     {
         $this->model = $model;
     }

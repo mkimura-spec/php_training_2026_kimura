@@ -8,17 +8,18 @@ require_once __DIR__ . '/../common/common.php';
 <head>
   <meta charset="UTF-8">
   <title>ToDo追加画面</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
         .error{
           border: 1px solid red;
-          background-color: #f0f8ff;
+          background-color: #ff6347;
           padding: 10px;
         }
         .container {
           width: 320px;
           margin: 0 auto;
         }
-    </style>
+  </style>
 </head>
 
 <body style="background-color: #f0f8ff">
@@ -42,9 +43,11 @@ require_once __DIR__ . '/../common/common.php';
       <br>
       <textarea name="content" style="width:300px; height:100px;"><?php echo Sanitizer::sanitize($content); ?></textarea>
     </p>
+    <div class="d-flex justify-content-between">
     <input type="hidden" name="action" value="add_store">
-    <button type="button" onclick="location.href='<?php echo BASE_URL; ?>/index.php'">一覧画面へ戻る</button>
-    <input type="submit" value="追加する">
+    <button type="button" class="btn btn-secondary" onclick="location.href='<?php echo BASE_URL; ?>/index.php'">&larr; 一覧画面へ戻る</button>
+    <input type="submit" class="btn btn-primary" value="&plus; 追加する" style="padding: 5px 15px;">
+    </div>
   </form>
   </div>
 </body>

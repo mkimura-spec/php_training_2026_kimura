@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../models/db.php';
 require_once __DIR__ . '/../common/TaskValidator.php';
 require_once __DIR__ . '/../common/common.php';
+require_once __DIR__ . '/../models/Interfacedb.php';
 
 /**
  * ToDoの編集機能を担当するコントローラー
@@ -12,7 +13,7 @@ class EditController
 {
     private $model;
 
-    public function __construct($model)
+    public function __construct(Interfacedb $model)
     {
         $this->model = $model;
     }

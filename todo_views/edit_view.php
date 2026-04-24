@@ -8,17 +8,18 @@ require_once __DIR__ . '/../common/common.php';
 <head>
   <meta charset="UTF-8">
   <title>ToDo編集画面</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
         .error{
           border: 1px solid red;
-          background-color: #f0f8ff;
+          background-color: #f69d8d;
           padding: 10px;
         }
         .container {
           width: 320px;
           margin: 0 auto;
         }
-    </style>
+  </style>
 </head>
 <body style="background-color: #f0f8ff">
   <div class="container">
@@ -29,7 +30,7 @@ require_once __DIR__ . '/../common/common.php';
         <?php foreach ($errors as $error) { ?>
             <p><?php echo Sanitizer::sanitize($error); ?></p>
         <?php } ?>
-        </div>
+    </div>
     <?php } ?>
 
   <form method="post" action="<?php echo BASE_URL; ?>/route/todo_branch.php">
@@ -42,10 +43,12 @@ require_once __DIR__ . '/../common/common.php';
       <!-- textareaの中は生の改行をそのまま認識してくれるのでnl2brは不要・textareaは改行が楽 -->
       <textarea name="content" style="width:300px; height:100px;"><?php echo Sanitizer::sanitize($content); ?></textarea>
     </p>
-    <button type="button" onclick="location.href='<?php echo BASE_URL; ?>/index.php'">一覧画面へ戻る</button>
+    <div class="d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" onclick="location.href='<?php echo BASE_URL; ?>/index.php'">&larr; 一覧画面へ戻る</button>
     <input type="hidden" name="action" value="edit_store">
     <input type="hidden" name="id" value="<?php echo Sanitizer::sanitize($id); ?>">
-    <input type="submit" value="変更する">
+    <input type="submit" class="btn btn-primary" value="&check; 変更する">
+    </div>
   </form>
   </div>
 </body>

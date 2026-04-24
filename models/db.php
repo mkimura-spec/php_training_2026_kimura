@@ -6,8 +6,9 @@
  */
 
 require_once __DIR__ . '/Task.php'; // Taskクラスを使うので読み込む
+require_once __DIR__ . '/Interfacedb.php'; // インターフェースであるInterfacedbを使うので読み込む
 
-class TaskModel
+class TaskModel implements Interfacedb
 {
     private $dbh;
 
@@ -23,7 +24,7 @@ class TaskModel
      *
      * @return Task[] ToDoオブジェクトの配列
      */
-    public function getAll(StrategyInterface $strategy)
+    public function getAll(StrategyInterface $strategy): array
     {
         // コントローラ側で受け取ったstrategyクラスの中のメソッドを使ってSQL文を作る
         // メソッド名はインターフェースで統一している
@@ -52,10 +53,8 @@ class TaskModel
      * 該当するデータが存在しない場合は null を返す。
      *
      * @param int|string $id 取得対象のToDo ID
-     *
-     * @return Task|null
      */
-    public function findById($id)
+    public function findById($id): ?Task
     {
         $sql = 'SELECT id, title, content, created_at, updated_at FROM table_todolist WHERE id=?';
         $stmt = $this->dbh->prepare($sql);
